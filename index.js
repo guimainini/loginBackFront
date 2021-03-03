@@ -5,18 +5,8 @@ const express = require ('express');
 const app = express();
 
 
-// peticion GET
-app.get('/', ( req, res ) => {
-
-    console.log('Peticion en el /');
-
-    res.json({
-        ok  : true,
-        msg : 'Todo salio bien',
-        uid : 1234
-    })
-
-});
+//Rutas
+app.use( '/api/auth', require('./routes/auth') );
 
 
 
