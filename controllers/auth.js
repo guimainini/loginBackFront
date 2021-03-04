@@ -2,6 +2,9 @@ const { response } = require('express');
 
 const createUser = (req, res) =>  {
 
+    const { email, name, pass } = req.body;
+    console.log(email, name, pass);
+
     return res.json({
         ok  : true,
         msg : 'Crear usuario /new'
@@ -10,6 +13,9 @@ const createUser = (req, res) =>  {
 }
 
 const loginUser = (req, res) =>  {
+
+    const { email, pass } = req.body;
+    console.log(email, pass);
 
     return res.json({
         ok  : true,
