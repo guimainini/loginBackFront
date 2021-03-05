@@ -2,15 +2,19 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { createUser, loginUser, revalidateToken } = require('../controllers/auth');
+const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
 
 // Crear un nuevo usuario
 //middleware  va en el medio 
 router.post( '/new',[
+    check('name', 'El Nombre es obligatorio').not().isEmpty(),
     check('email', 'El mail es obligatorio').isEmail(),
     check('pass', 'El Pass es obligatorio').isLength({ min: 6 }),
-    check('name', 'El Nombre es obligatorio').not().isEmpty()
+
+    validarCampos
+
 ] ,createUser );
 
 //Middleware es software que se sitúa entre un sistema operativo y 
@@ -22,7 +26,10 @@ router.post( '/new',[
 //middleware  va en el medio 
 router.post( '/', [
     check('email', 'El mail es obligatorio').isEmail(),
-    check('pass', 'El Pass es obligatorio').isLength({ min: 6 })
+    check('pass', 'El Pass es obligatorio').isLength({ min: 6 }),
+
+    validarCampos
+
 ] ,loginUser);
 
 //  Validar y revalidar token
