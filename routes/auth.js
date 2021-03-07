@@ -1,43 +1,34 @@
-
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { createUser, loginUser, revalidateToken } = require('../controllers/auth');
+const { crearUsuario, loginUsuario, revalidarToken } = require('../controllers/auth');
 const { validarCampos } = require('../middlewares/validar-campos');
+const { validarJWT } = require('../middlewares/validar-jwt');
+
 
 const router = Router();
 
 // Crear un nuevo usuario
-//middleware  va en el medio 
-router.post( '/new',[
-    check('name', 'El Nombre es obligatorio').not().isEmpty(),
-    check('email', 'El mail es obligatorio').isEmail(),
-    check('pass', 'El Pass es obligatorio').isLength({ min: 6 }),
-
+router.post( '/new', [
+    check('name', 'El nombre es obligatorio').not().isEmpty(),
+    check('email', 'El email es obligatorio').isEmail(),
+    check('password', 'La contraseña es obligatoria').isLength({ min: 6 }),
     validarCampos
+], crearUsuario );
 
-] ,createUser );
-
-//Middleware es software que se sitúa entre un sistema operativo y 
-//las aplicaciones que se ejecutan en él. Básicamente, funciona como una 
-//capa de traducción oculta para permitir la comunicación y la administración de 
-//datos en aplicaciones distribuidas.
-
-//  Login de usuario
-//middleware  va en el medio 
+// Login de usuario
 router.post( '/', [
-    check('email', 'El mail es obligatorio').isEmail(),
-    check('pass', 'El Pass es obligatorio').isLength({ min: 6 }),
-
+    check('email', 'El email es obligatorio').isEmail(),
+    check('password', 'La contraseña es obligatoria').isLength({ min: 6 }),
     validarCampos
+], loginUsuario );
 
-] ,loginUser);
+// Validar y revalidar token
+router.get( '/renew', validarJWT , revalidarToken );
 
-//  Validar y revalidar token
-router.get( '/renew', revalidateToken);
+
+
+
 
 
 
 module.exports = router;
-
-
-
